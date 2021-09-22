@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel target="1.7">
+      <module name="GroundTruth.app" target="11" />
+      <module name="GroundTruth.buildSrc" target="11" />
+      <module name="GroundTruth.components" target="11" />
+      <module name="GroundTruth.mission.ui-missionDetail" target="11" />
+      <module name="GroundTruth.mission.ui-missionList" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

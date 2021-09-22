@@ -1,0 +1,21 @@
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "GroundTruth"
+include ':app'
+include ':constants'
+include ':components'
+include ':mission_datasource_test'
+include ':mission'
+include ':mission:mission-datasource'
+include ':mission:mission-datasource-test'
+include ':mission:mission-domain'
+include ':mission:mission-interactors'
+include ':mission:ui-missionList'
+include ':mission:ui-missionDetail'
+
+include ':components'
