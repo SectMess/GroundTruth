@@ -8,11 +8,11 @@ object Modules {
 
     const val constants = ":constants"
 
-    const val hero = ":hero"
-    const val heroDataSource = ":hero:hero-datasource"
-    const val heroDataSourceTest = ":hero:hero-datasource-test"
-    const val heroDomain = ":hero:hero-domain"
-    const val heroInteractors = ":hero:hero-interactors"
-    const val ui_heroDetail = ":hero:ui-heroDetail"
-    const val ui_heroList = ":hero:ui-heroList"
+    const val mission = ":mission"
+    const val missionDataSource = ":mission:mission-datasource"
+    const val missionDataSourceTest = ":mission:mission-datasource-test"
+    const val missionDomain = ":mission:mission-domain"
+    const val missionInteractors = ":mission:mission-interactors"
+    const val ui_missionDetail = ":mission:ui-missionDetail"
+    const val ui_missionList = ":mission:ui-missionList"
 }

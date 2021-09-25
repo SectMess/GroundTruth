@@ -1,85 +1,54 @@
 package com.astute.groundtruth.ui.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.darkColors
+import androidx.compose.material.lightColors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
-import com.astute.groundtruth.R
 
-private val QuickSand = FontFamily(
-    Font(R.font.quicksand_light, FontWeight.W300),
-    Font(R.font.quicksand_regular, FontWeight.W400),
-    Font(R.font.quicksand_medium, FontWeight.W500),
-    Font(R.font.quicksand_bold, FontWeight.W600)
+private val DarkColorPalette = darkColors(
+    primary = Blue300,
+    primaryVariant = Blue700,
+    onPrimary = Color.White,
+    secondary = Color.Black,
+    secondaryVariant = Teal300,
+    onSecondary = Color.White,
+    error = RedErrorLight,
+    onError = RedErrorDark,
+    background = Color.Black,
+    onBackground = Color.White,
+    surface = Black1,
+    onSurface = Color.White,
 )
 
-val QuickSandTypography = Typography(
-    h1 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 32.sp,
-    ),
-    h2 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 26.sp,
-    ),
-    h3 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 22.sp,
-    ),
-    h4 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 20.sp,
-    ),
-    h5 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 18.sp,
-    ),
-    h6 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-    ),
-    subtitle1 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W500,
-        fontSize = 15.sp,
-    ),
-    subtitle2 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 14.sp,
-    ),
-    body1 = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
-    ),
-    body2 = TextStyle(
-        fontFamily = QuickSand,
-        fontSize = 14.sp
-    ),
-    button = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 16.sp,
-        color = Color.White
-    ),
-    caption = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.Normal,
-        fontSize = 13.sp
-    ),
-    overline = TextStyle(
-        fontFamily = QuickSand,
-        fontWeight = FontWeight.W400,
-        fontSize = 13.sp
+private val LightColorPalette = lightColors(
+    primary = Blue600,
+    primaryVariant = Blue400,
+    onPrimary = Black1,
+    secondary = Color.White,
+    secondaryVariant = Teal300,
+    onSecondary = Color.Black,
+    error = RedErrorDark,
+    onError = RedErrorLight,
+    background = Grey1,
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Black1,
+)
+
+@Composable
+fun GroundTruthTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+    val colors = if(darkTheme){
+        DarkColorPalette
+    } else{
+        LightColorPalette
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = QuickSandTypography,
+        shapes = AppShapes,
+        content = content
     )
-)
+}

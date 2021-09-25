@@ -1,9 +1,16 @@
+apply {
+    from("$rootDir/library-build.gradle")
+}
 plugins {
-    id("java-library")
-    id("kotlin")
+    id(SqlDelight.plugin)
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+dependencies{
+    "implementation"(project(Modules.missionDomain))
+
+    "implementation"(Ktor.core)
+    "implementation"(Ktor.clientSerialization)
+    "implementation"(Ktor.android)
+
+    "implementation"(SqlDelight.runtime)
 }

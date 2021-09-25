@@ -19,3 +19,4 @@ include ':mission:ui-missionList'
 include ':mission:ui-missionDetail'
 
 include ':components'
+include ':core'
