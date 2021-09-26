@@ -1,4 +1,4 @@
-CREATE TABLE  hero_Entity(
+CREATE TABLE  mission_Entity(
     id INTEGER NOT NULL PRIMARY KEY,
     localizedName TEXT NOT NULL,
     primaryAttribute TEXT NOT NULL,
@@ -63,11 +63,11 @@ CREATE TABLE  hero_Entity(
 
 selectAll:
 SELECT *
-FROM hero_Entity;
+FROM mission_Entity;
 
-insertHero:
+insertMission:
 INSERT OR REPLACE
-INTO hero_Entity (
+INTO mission_Entity (
     id,
     localizedName,
     primaryAttribute,
@@ -126,20 +126,20 @@ INTO hero_Entity (
 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 
-searchHeroByName:
-SELECT * FROM hero_Entity
+searchMissionByName:
+SELECT * FROM mission_Entity
 WHERE localizedName LIKE ('%' || :query || '%');
 
-searchHeroByAttr:
-SELECT * FROM hero_Entity
+searchMissionByAttr:
+SELECT * FROM mission_Entity
 WHERE primaryAttribute = :primaryAttr;
 
-searchHeroByAttackType:
-SELECT * FROM hero_Entity
+searchMissionByAttackType:
+SELECT * FROM mission_Entity
 WHERE attackType = :attackType;
 
-searchHeroByRole:
-SELECT * FROM hero_Entity
+searchMissionByRole:
+SELECT * FROM mission_Entity
 WHERE roleCarry = :roleCarry
 AND roleEscape = :roleEscape
 AND roleNuker = :roleNuker
@@ -151,10 +151,10 @@ AND roleSupport = :roleSupport
 AND rolePusher = :rolePusher
 ;
 
-getHero:
-SELECT * FROM hero_Entity
+getMission:
+SELECT * FROM mission_Entity
 WHERE id = :id;
 
-removeHero:
-DELETE FROM hero_Entity
+removeMission:
+DELETE FROM mission_Entity
 WHERE id = :id;

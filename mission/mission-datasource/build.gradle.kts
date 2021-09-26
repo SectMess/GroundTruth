@@ -3,6 +3,7 @@ apply {
 }
 plugins {
     id(SqlDelight.plugin)
+    kotlin(KotlinPlugins.serialization) version Kotlin.version
 }
 
 dependencies{
@@ -13,4 +14,11 @@ dependencies{
     "implementation"(Ktor.android)
 
     "implementation"(SqlDelight.runtime)
+}
+//to generate, need placeholder inside the main com folder
+sqldelight{
+    database("MissionDatabase"){
+        packageName = "com.astute.mission_datasource.cache"
+        sourceFolders = listOf("sqldelight")
+    }
 }

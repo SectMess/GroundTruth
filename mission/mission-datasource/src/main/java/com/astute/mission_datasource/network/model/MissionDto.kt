@@ -1,4 +1,4 @@
-package com.astute.mission_datasource.network
+package com.astute.mission_datasource.network.model
 
 import com.astute.mission_datasource.network.EndPoints.BASE_URL
 import com.astute.mission_domain.*
