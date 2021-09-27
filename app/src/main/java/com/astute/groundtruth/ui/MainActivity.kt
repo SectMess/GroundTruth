@@ -3,6 +3,7 @@ package com.astute.groundtruth.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -27,6 +28,7 @@ class MainActivity : ComponentActivity() {
     lateinit var imageLoader: ImageLoader
 
 
+    @ExperimentalComposeUiApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,6 +53,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@ExperimentalComposeUiApi
 fun NavGraphBuilder.addMissionList(
     navController: NavController,
     imageLoader: ImageLoader
@@ -61,6 +64,7 @@ fun NavGraphBuilder.addMissionList(
         val viewModel: MissionListViewModel = hiltViewModel()
         MissionList(
             state = viewModel.state.value,
+            events = viewModel::onTriggerEvent,
             imageLoader = imageLoader,
             navigateToDetailScreen = { missionId ->
                 navController.navigate("${Screen.MissionDetail.route}/$missionId")
