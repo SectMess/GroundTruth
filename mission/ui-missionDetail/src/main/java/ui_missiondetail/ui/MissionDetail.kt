@@ -19,6 +19,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.rememberImagePainter
+import com.astute.components.DefaultScreenUI
+import com.astute.core.domain.ProgressBarState
 import com.astute.mission_domain.Mission
 import com.astute.mission_domain.maxAttackDmg
 import com.astute.mission_domain.minAttackDmg
@@ -30,88 +32,93 @@ fun MissionDetail(
     state: MissionDetailState,
     imageLoader: ImageLoader,
 ) {
-    state.mission?.let{ mission ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colors.background)
-        ) {
-            item {
-                Column {
-                    val painter = rememberImagePainter(
-                        mission.img,
-                        imageLoader = imageLoader,
-                        builder = {
-                            placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
-                        }
-                    )
-                    Image(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .defaultMinSize(minHeight = 200.dp),
-                        painter = painter,
-                        contentDescription = mission.localizedName,
-                        contentScale = ContentScale.Crop,
-                    )
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(12.dp)
-                    ) {
-                        Row(
+    DefaultScreenUI(
+        progressBarState = state.progressBarState
+    ) {
+        state.mission?.let{ mission ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colors.background)
+            ) {
+                item {
+                    Column {
+                        val painter = rememberImagePainter(
+                            mission.img,
+                            imageLoader = imageLoader,
+                            builder = {
+                                placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
+                            }
+                        )
+                        Image(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
+                                .defaultMinSize(minHeight = 200.dp),
+                            painter = painter,
+                            contentDescription = mission.localizedName,
+                            contentScale = ContentScale.Crop,
+                        )
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(12.dp)
                         ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .align(Alignment.CenterVertically)
+                                        .padding(end = 8.dp),
+                                    text = mission.localizedName,
+                                    style = MaterialTheme.typography.h1,
+                                )
+                                val iconPainter = rememberImagePainter(
+                                    mission.icon,
+                                    imageLoader = imageLoader,
+                                    builder = {
+                                        placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
+                                    }
+                                )
+                                Image(
+                                    modifier = Modifier
+                                        .height(30.dp)
+                                        .width(30.dp)
+                                        .align(Alignment.CenterVertically),
+                                    painter = iconPainter,
+                                    contentDescription = mission.localizedName,
+                                    contentScale = ContentScale.Crop,
+                                )
+                            }
                             Text(
                                 modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                    .padding(end = 8.dp),
-                                text = mission.localizedName,
-                                style = MaterialTheme.typography.h1,
+                                    .padding(bottom = 4.dp),
+                                text = mission.primaryAttribute.uiValue,
+                                style = MaterialTheme.typography.subtitle1,
                             )
-                            val iconPainter = rememberImagePainter(
-                                mission.icon,
-                                imageLoader = imageLoader,
-                                builder = {
-                                    placeholder(if (isSystemInDarkTheme()) R.drawable.black_background else R.drawable.white_background)
-                                }
-                            )
-                            Image(
+                            Text(
                                 modifier = Modifier
-                                    .height(30.dp)
-                                    .width(30.dp)
-                                    .align(Alignment.CenterVertically),
-                                painter = iconPainter,
-                                contentDescription = mission.localizedName,
-                                contentScale = ContentScale.Crop,
+                                    .padding(bottom = 12.dp),
+                                text = mission.attackType.uiValue,
+                                style = MaterialTheme.typography.caption,
                             )
+                            MissionBaseStats(
+                                mission = mission,
+                                padding = 10.dp,
+                            )
+                            Spacer(modifier = Modifier.height(12.dp))
+                            WinPercentages(mission = mission,)
                         }
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 4.dp),
-                            text = mission.primaryAttribute.uiValue,
-                            style = MaterialTheme.typography.subtitle1,
-                        )
-                        Text(
-                            modifier = Modifier
-                                .padding(bottom = 12.dp),
-                            text = mission.attackType.uiValue,
-                            style = MaterialTheme.typography.caption,
-                        )
-                        MissionBaseStats(
-                            mission = mission,
-                            padding = 10.dp,
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        WinPercentages(mission = mission,)
                     }
                 }
             }
         }
     }
+
 }
 
 /**

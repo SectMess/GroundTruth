@@ -6,7 +6,8 @@ import com.squareup.sqldelight.db.SqlDriver
 
 data class MissionInteractors(
     val getMissions: GetMissions,
-    val getMissionFromCache: GetMissionFromCache
+    val getMissionFromCache: GetMissionFromCache,
+    val filterMission: FilterMission,
 ){
     companion object Factory {
         fun build(sqlDriver: SqlDriver): MissionInteractors{
@@ -19,7 +20,8 @@ data class MissionInteractors(
                 ),
                 getMissionFromCache = GetMissionFromCache(
                     cache = cache
-                )
+                ),
+                filterMission = FilterMission(),
             )
         }
 

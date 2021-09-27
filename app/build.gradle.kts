@@ -50,6 +50,8 @@ dependencies{
     implementation(project(Modules.ui_missionList))
     implementation(project(Modules.ui_missionDetail))
 
+    implementation(Accompanist.animations)
+
     implementation(AndroidX.coreKtx)
     implementation(AndroidX.appCompat)
     implementation(AndroidX.lifecycleVmKtx)

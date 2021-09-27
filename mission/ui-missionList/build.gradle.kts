@@ -3,6 +3,7 @@ apply {
 }
 dependencies{
     "implementation"(project(Modules.core))
+    "implementation"(project(Modules.components))
     "implementation"(project(Modules.missionDomain))
     "implementation"(project(Modules.missionInteractors))
 

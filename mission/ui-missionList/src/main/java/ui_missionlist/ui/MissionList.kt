@@ -1,5 +1,6 @@
 package ui_missionlist.ui
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,10 +14,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import coil.ImageLoader
+import com.astute.components.DefaultScreenUI
 import com.astute.core.domain.ProgressBarState
+import com.astute.core.domain.UIComponentState
 import com.astute.ui_missionlist.MissionListItem
+import ui_missionlist.components.MissionListFilter
 import ui_missionlist.components.MissionListToolbar
 
+@ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @Composable
 fun MissionList(
@@ -25,7 +30,9 @@ fun MissionList(
     imageLoader: ImageLoader,
     navigateToDetailScreen: (Int) -> Unit
 ) {
-    Box(modifier = Modifier.fillMaxSize()){
+    DefaultScreenUI(
+        progressBarState = state.progressBarState
+    ) {
         Column{
             MissionListToolbar(
                 missionName = state.missionName ,
@@ -36,9 +43,9 @@ fun MissionList(
                     events(MissionListEvents.FilterMissions)
                 },
                 onShowFilterDialog = {
-
+                    events(MissionListEvents.UpdateFilterDialogState(UIComponentState.Show))
                 })
-            
+
             LazyColumn{
                 items(state.filteredMissions){ mission ->
                     MissionListItem(
@@ -52,10 +59,22 @@ fun MissionList(
             }
         }
 
-        if(state.progressBarState is ProgressBarState.Loading){
-            CircularProgressIndicator(
-                modifier = Modifier.align(Alignment.Center)
+        if(state.filterDialogState is UIComponentState.Show){
+            MissionListFilter(
+                missionFilter = state.missionFilter,
+                onUpdateMissionFilter = { missionFilter ->
+                    events(MissionListEvents.UpdateMissionFilter(missionFilter))
+                },
+                onCloseDialog = {
+                    events(MissionListEvents.UpdateFilterDialogState(UIComponentState.Hide))
+                },
+                attributeFilter = state.primaryAttribute,
+                onUpdateAttributeFilter = { missionAttribute ->
+                    events(MissionListEvents.UpdateAttributeFilter(missionAttribute))
+                }
             )
         }
+
     }
+
 }

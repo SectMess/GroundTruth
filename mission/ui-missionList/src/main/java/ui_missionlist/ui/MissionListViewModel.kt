@@ -10,6 +10,9 @@ import com.astute.core.DataState
 import com.astute.core.domain.UIComponent
 import com.astute.core.util.Logger
 import com.astute.mission_domain.Mission
+import com.astute.mission_domain.MissionAttribute
+import com.astute.mission_domain.MissionFilter
+import com.astute.mission_interactors.FilterMission
 import com.astute.mission_interactors.GetMissions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -22,6 +25,7 @@ class MissionListViewModel
 @Inject
 constructor(
     private val getMissions: GetMissions,
+    private val filterMission: FilterMission,
     private @Named("missionListLogger") val logger: Logger
     //private val savedStateHandle: SavedStateHandle,
 ):ViewModel() {
@@ -44,7 +48,29 @@ constructor(
             is MissionListEvents.UpdateMissionName -> {
                 updateMissionName(event.missionName)
             }
+
+            is MissionListEvents.UpdateMissionFilter -> {
+                updateMissionFilter(event.missionFilter)
+            }
+
+            is MissionListEvents.UpdateFilterDialogState -> {
+                state.value = state.value.copy(filterDialogState = event.uiComponentState)
+            }
+
+            is MissionListEvents.UpdateAttributeFilter -> {
+                updateAttributeFilter(event.attribute)
+            }
         }
+    }
+
+    private fun updateAttributeFilter(attribute: MissionAttribute) {
+        state.value = state.value.copy(primaryAttribute = attribute)
+        filterMissions()
+    }
+
+    private fun updateMissionFilter(missionFilter: MissionFilter) {
+        state.value = state.value.copy(missionFilter = missionFilter)
+        filterMissions()
     }
 
     private fun updateMissionName(missionName: String){
@@ -52,10 +78,14 @@ constructor(
     }
 
     private fun filterMissions(){
-        val filteredList: MutableList<Mission> = state.value.missions.filter{
-            it.localizedName.lowercase().contains(state.value.missionName.lowercase())
-        }.toMutableList()
-        state.value = state.value.copy(filteredMissions = filteredList)
+        val filterList = filterMission.execute(
+            current = state.value.missions,
+            missionName = state.value.missionName,
+            missionFilter = state.value.missionFilter,
+            attributeFilter = state.value.primaryAttribute,
+        )
+        state.value = state.value.copy(filteredMissions = filterList)
+
     }
 
     private fun getMissions(){

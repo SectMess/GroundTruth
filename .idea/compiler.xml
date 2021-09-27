@@ -4,6 +4,7 @@
     <bytecodeTargetLevel target="1.8">
       <module name="GroundTruth.app" target="11" />
       <module name="GroundTruth.buildSrc" target="11" />
+      <module name="GroundTruth.components" target="11" />
       <module name="GroundTruth.mission.ui-missionDetail" target="11" />
       <module name="GroundTruth.mission.ui-missionList" target="11" />
     </bytecodeTargetLevel>

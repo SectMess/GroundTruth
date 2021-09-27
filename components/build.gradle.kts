@@ -1,6 +1,7 @@
 apply {
-    from("$rootDir/library-build.gradle")
+    from("$rootDir/android-library-build.gradle")
 }
 dependencies{
+    "implementation"(project(Modules.core))
 
 }
