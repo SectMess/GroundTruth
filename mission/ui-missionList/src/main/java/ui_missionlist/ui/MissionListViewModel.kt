@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astute.core.DataState
+import com.astute.core.domain.Queue
 import com.astute.core.domain.UIComponent
 import com.astute.core.util.Logger
 import com.astute.mission_domain.Mission
@@ -17,6 +18,7 @@ import com.astute.mission_interactors.GetMissions
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.Exception
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -60,6 +62,10 @@ constructor(
             is MissionListEvents.UpdateAttributeFilter -> {
                 updateAttributeFilter(event.attribute)
             }
+
+            is MissionListEvents.onRemoveHeadFromQueue -> {
+                removeHeadMessage()
+            }
         }
     }
 
@@ -94,7 +100,7 @@ constructor(
                 is DataState.Response -> {
                     when(dataState.uiComponent){
                         is UIComponent.Dialog -> {
-                            logger.log((dataState.uiComponent as UIComponent.Dialog).description)
+                            appendToMessageQueue(dataState.uiComponent)
                         }
                         is UIComponent.None -> {
                             logger.log((dataState.uiComponent as UIComponent.None).message)
@@ -112,6 +118,25 @@ constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun appendToMessageQueue(uiComponent: UIComponent){
+        val queue = state.value.errorQueue
+        queue.add((uiComponent))
+        state.value = state.value.copy(errorQueue = Queue(mutableListOf())) //force recompose
+        state.value = state.value.copy(errorQueue = queue)
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.errorQueue
+            queue.remove()
+            state.value = state.value.copy(errorQueue = Queue(mutableListOf())) //force recompose
+            state.value = state.value.copy(errorQueue = queue)
+
+        } catch (e: Exception){
+            logger.log("Nothing to remove from Dialog Queue")
+        }
     }
 
 }

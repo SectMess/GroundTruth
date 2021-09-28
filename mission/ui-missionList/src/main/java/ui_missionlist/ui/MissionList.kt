@@ -31,7 +31,11 @@ fun MissionList(
     navigateToDetailScreen: (Int) -> Unit
 ) {
     DefaultScreenUI(
-        progressBarState = state.progressBarState
+        queue = state.errorQueue,
+        progressBarState = state.progressBarState,
+        onRemoveHeadFromQueue = {
+            events(MissionListEvents.onRemoveHeadFromQueue)
+        },
     ) {
         Column{
             MissionListToolbar(

@@ -6,11 +6,16 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.astute.core.DataState
+import com.astute.core.domain.Queue
+import com.astute.core.domain.UIComponent
+import com.astute.core.util.Logger
 import com.astute.mission_interactors.GetMissionFromCache
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import java.lang.Exception
 import javax.inject.Inject
+import javax.inject.Named
 
 @HiltViewModel
 class MissionDetailViewModel
@@ -18,6 +23,8 @@ class MissionDetailViewModel
 constructor(
     private val getMissionFromCache: GetMissionFromCache,
     private val savedStateHandle: SavedStateHandle,
+    private @Named("missionDetailLogger") val logger: Logger
+
 ): ViewModel(){
 
     val state: MutableState<MissionDetailState> = mutableStateOf(MissionDetailState())
@@ -26,12 +33,28 @@ constructor(
         savedStateHandle.get<Int>("missionId")?.let { missionId ->
             onTriggerEvent(MissionDetailEvents.GetMissionFromCache(missionId))
         }
+//        appendToMessageQueue(
+//            uiComponent = UIComponent.Dialog(
+//                title = "Test 1",
+//                description = "Nothing here"
+//            )
+//        )
+//        appendToMessageQueue(
+//            uiComponent = UIComponent.Dialog(
+//                title = "Test 2",
+//                description = "Nothing there"
+//            )
+//        )
     }
 
     fun onTriggerEvent(event: MissionDetailEvents){
         when(event){
             is MissionDetailEvents.GetMissionFromCache -> {
                 getMissionFromCache(event.id)
+            }
+
+            is MissionDetailEvents.onRemoveHeadFromQueue -> {
+                removeHeadMessage()
             }
         }
     }
@@ -48,10 +71,36 @@ constructor(
                 }
 
                 is DataState.Response -> {
-                    //TODO(Handle Errors)
+                    when(dataState.uiComponent){
+                        is UIComponent.Dialog -> {
+                            appendToMessageQueue(dataState.uiComponent)
+                        }
+                        is UIComponent.None -> {
+                            logger.log("getMissionFromCache: ${(dataState.uiComponent as UIComponent.None).message}")
+                        }
+                    }
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun appendToMessageQueue(uiComponent: UIComponent){
+        val queue = state.value.errorQueue
+        queue.add((uiComponent))
+        state.value = state.value.copy(errorQueue = Queue(mutableListOf())) //force recompose
+        state.value = state.value.copy(errorQueue = queue)
+    }
+
+    private fun removeHeadMessage() {
+        try {
+            val queue = state.value.errorQueue
+            queue.remove()
+            state.value = state.value.copy(errorQueue = Queue(mutableListOf())) //force recompose
+            state.value = state.value.copy(errorQueue = queue)
+
+        } catch (e: Exception){
+            logger.log("Nothing to remove from Dialog Queue")
+        }
     }
 
 

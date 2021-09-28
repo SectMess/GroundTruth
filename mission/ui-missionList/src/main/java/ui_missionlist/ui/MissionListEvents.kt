@@ -25,4 +25,7 @@ sealed class MissionListEvents {
     data class UpdateAttributeFilter(
         val attribute: MissionAttribute
     ): MissionListEvents()
+
+    object onRemoveHeadFromQueue: MissionListEvents()
+
 }

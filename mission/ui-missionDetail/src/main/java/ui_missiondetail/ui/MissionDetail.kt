@@ -24,16 +24,22 @@ import com.astute.core.domain.ProgressBarState
 import com.astute.mission_domain.Mission
 import com.astute.mission_domain.maxAttackDmg
 import com.astute.mission_domain.minAttackDmg
+import ui_missiondetail.ui.MissionDetailEvents
 import ui_missiondetail.ui.MissionDetailState
 import kotlin.math.round
 
 @Composable
 fun MissionDetail(
     state: MissionDetailState,
+    events: (MissionDetailEvents) -> Unit,
     imageLoader: ImageLoader,
 ) {
     DefaultScreenUI(
-        progressBarState = state.progressBarState
+        queue = state.errorQueue,
+        progressBarState = state.progressBarState,
+        onRemoveHeadFromQueue = {
+            events(MissionDetailEvents.onRemoveHeadFromQueue)
+        },
     ) {
         state.mission?.let{ mission ->
             LazyColumn(

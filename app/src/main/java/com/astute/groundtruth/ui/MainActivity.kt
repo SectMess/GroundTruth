@@ -134,6 +134,7 @@ fun NavGraphBuilder.addMissionDetail(
         MissionDetail(
             state = viewModel.state.value,
             imageLoader = imageLoader,
+            events = viewModel::onTriggerEvent,
         )
     }
 }

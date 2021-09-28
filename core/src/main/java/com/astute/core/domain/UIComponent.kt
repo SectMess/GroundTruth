@@ -7,6 +7,8 @@ sealed class UIComponent{
         val description: String
     ): UIComponent()
 
+    //can extend to toast or snackbars
+
     data class None(
         val message: String
     ): UIComponent()

@@ -1,6 +1,8 @@
 package ui_missionlist.ui
 
 import com.astute.core.domain.ProgressBarState
+import com.astute.core.domain.Queue
+import com.astute.core.domain.UIComponent
 import com.astute.core.domain.UIComponentState
 import com.astute.mission_domain.Mission
 import com.astute.mission_domain.MissionAttribute
@@ -14,4 +16,5 @@ data class MissionListState(
     val missionFilter: MissionFilter = MissionFilter.Mission(),
     val primaryAttribute: MissionAttribute = MissionAttribute.Unknown,
     val filterDialogState: UIComponentState = UIComponentState.Hide,
+    val errorQueue: Queue<UIComponent> = Queue(mutableListOf()),
 )
